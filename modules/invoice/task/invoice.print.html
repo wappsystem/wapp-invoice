@@ -4,7 +4,7 @@
             <div id=tbdiv style='padding:20px'>
                 <table id=table_form_noborder__ID class=width__ID>
                     <colgroup><col style='width:550px' /><col style='width:100px' /><col /></colgroup>
-                    <tr><td  style='font-size:200%' >Wappsystem PTY LTD</td><td colspan=2 style='font-size:300%;'>Tax Invoice</td></tr>
+                    <tr><td  style='font-size:200%' >Wappsystem PTY LTD</td><td colspan=2 style='font-size:200%;'>Tax Invoice</td></tr>
                     <tr><td>27 Creekwood Drive</td><td  style='font-size:150%;' >No.</td><td style='font-size:150%;' ><span id=invoice_number__ID></span></td></tr>
                     <tr><td>Voyager Point NSW 2172</td><td></td><td></td></tr>
                     <tr><td>Email:wappsystem@gmail.com</td><td></td><td></td></tr>
@@ -44,6 +44,9 @@
                     <tr><td  style='font-size:120%;text-align:right' >GST:&nbsp;&nbsp;<span id=gst__ID></span></td></tr>
                     <tr><td  style='font-size:150%;text-align:right' >TOTAL:&nbsp;&nbsp;<span id=total__ID></span></td></tr>
                     <tr><td>&nbsp;</td><td></td></tr>
+                    <tr><td  style='font-size:150%;text-align:right' >Amount Paid:&nbsp;&nbsp;<span id=total_paid__ID></span></td></tr>
+                    <tr><td  style='font-size:150%;text-align:right' >Balance:&nbsp;&nbsp;<span id=total_balance__ID></span></td></tr>
+                    <tr><td>&nbsp;</td><td></td></tr>
                     <tr><td style='font-size:120%;text-align:right' >Please pay by<span id=pay_by__ID ></span></td></tr>
                 </table>
             </div>
@@ -62,8 +65,8 @@
             //-----------------------------------------
             var record=$vm.vm['__ID'].op.input.record;
             //get invoice
-            var prefix=$vm.module_list[$vm.vm['__ID'].name].prefix;
-            var invoice_pid=$vm.module_list[prefix+'invoice'].table_id;
+//            var prefix=$vm.module_list[$vm.vm['__ID'].name].prefix;
+            var invoice_pid=$vm.module_list['invoice'].table_id;
             var invoice_uid=record.UID;
             //-----------------------------------------
             $('#invoice_number__ID').text(record.UID);
@@ -72,6 +75,9 @@
             //if(record.V12!==undefined) $('#sub_total__ID').text('$'+parseFloat(record.V12).toFixed(2));
             if(record.GST_Amount!==undefined) $('#gst__ID').text('$'+parseFloat(record.GST_Amount).toFixed(2));
             if(record.Total_Amount!==undefined) $('#total__ID').text('$'+parseFloat(record.Total_Amount).toFixed(2));
+            if(record.Total_Payment!==undefined) $('#total_paid__ID').text('$'+parseFloat(record.Total_Payment).toFixed(2));
+            if(record.Balance!==undefined) $('#total_balance__ID').text('$'+parseFloat(record.Balance).toFixed(2));
+            if(record.PUID=="0")  $('#client__ID').text(record.Client);
             //-----------------------------------------
             //items
             var items=record.invoice_items
@@ -88,7 +94,7 @@
             //-----------------------------------------
             //get client
             var client_uid=record.PUID;
-            var client_pid=$vm.module_list[prefix+'client'].table_id;
+            var client_pid=$vm.module_list['client'].table_id;
             var sql="select Information from [TABLE-"+client_pid+"] where uid="+client_uid;
             var req={cmd:'query_records',sql:sql}
             $VmAPI.request({data:req,callback:function(res){

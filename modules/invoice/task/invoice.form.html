@@ -10,11 +10,12 @@
             <tr><td colspan=2 class='header__ID'>Invoice</td></tr>
 
             <tr><td colspan=2 data-id=Client data-custom=1>
-                <input name=Client  id=Client__ID  type=text class=sel__ID placeholder='select a partcipant...'/>
+                <input name=Client  id=Client__ID  type=text class=sel__ID placeholder='select a client...'/>
                 <input name=Client_uid id=Client_uid__ID type=text readonly style="width:50px;color:#ccc;" />
                 <u style='cursor:pointer;float:right;' id=Client_r__ID>Remove</u>
             </td></tr>
-			<tr><td>Invoice Number</td><td data-id=Invoice_Number></td></tr>
+<!--            <tr><td>Client Info (if not in Client List)</td><td data-id=Client_Info></td></tr> -->
+            <tr><td>Invoice Number</td><td data-id=Invoice_Number></td></tr>
             <tr><td>Issue Date</td><td data-id=Issue_Date></td></tr>
 			<tr><td>Due Date</td><td data-id=Due_Date></td></tr>
 			<tr><td colspan=2 class='subheader__ID'>Invoice Items</td></tr>
@@ -47,8 +48,7 @@
 		VmInclude:__COMPONENT__/grid/grid_item_a.2.js
 		VmInclude:__COMPONENT__/grid/grid_item_b.2.js
         //-------------------------------------
-        var prefix=$vm.module_list[$vm.vm['__ID'].name].prefix;
-        var client_tid=$vm.module_list[prefix+'client'].table_id;
+        var client_tid=$vm.module_list['client'].table_id;
         //-------------------------------------
         $('#Client__ID').autocomplete({
             minLength:0,
