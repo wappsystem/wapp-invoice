@@ -137,6 +137,8 @@
         //----------------------------------
         $('#add_an_item__ID').on('click',function(){ _item_a_add(); })
         //----------------------------------
+		var item_list_tid=$vm.module_list["item-list"].table_id;
+		//-------------------------------------
         _item_a_cell_render=function(records,I,field,td,set_value,source){
             switch(field){
                 case "Amount":
@@ -154,12 +156,34 @@
 						_item_a_after_change(records,I,field,td,set_value,source);
 					});
                     break;
+                case 'Description':
+                    var sql="with tb as (select name=S2,Information from [TABLE-"+item_list_tid+"])";
+                    sql+=" select top 10 name,Information from tb where Name like '%'+@S1+'%' ";
+                    td.autocomplete({
+                        minLength:0,
+                        source:function(request,response){
+                            $VmAPI.request({data:{cmd:'auto',s1:request.term,sql:sql,minLength:0},callback:function(res){
+                                response($vm.autocomplete_list(res.table));
+                            }});
+                        },
+                        select: function(event,ui){
+                            var a=ui.item.Information;
+                            a=$.parseJSON(a);
+                            //alert(a.Description);
+                            records[I]['Description']=a.Description;
+                            records[I]['Unit_Price']=a.Unit_Price;
+                            _item_a_after_change(records,I,'Description',td,set_value,source);
+                            _item_a_after_change(records,I,'Unit_Price',td,set_value,source);
+                        }
+                    })
+                    td.focus(function(){td.autocomplete("search","");});
+                break;
             }
         }
         //----------------------------------
         _item_a_after_change=function(records,I,field,td,set_value,source){
             switch(field){
-				case "Unit_Price":
+			case "Unit_Price":
                 case "Quantity":
 				case "GST":
                     cal();
