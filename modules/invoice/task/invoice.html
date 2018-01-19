@@ -6,7 +6,7 @@
         //-------------------------------------
         VmInclude:__COMPONENT__/grid/grid.v3.js
         //-------------------------------------
-        _fields="_Form,Invoice_Number,_Print,Client,Issue_Date,Due_Date,GST_Amount,Total_Amount,Total_Payment,Balance";
+        _fields="_Form,|_Print,No.|Invoice_Number,Client,Issue_Date,Due_Date,GST|GST_Amount,Amount|Total_Amount,Paid|Total_Payment,Balance";
 		_fields+=",_Hidden|invoice_items"
 		_fields+=",_Hidden|payment_items"
         _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete,_Hidden|Client_uid";
@@ -29,9 +29,9 @@
                     td.html('$ '+parseFloat(records[I][field]).toFixed(2) ); //add $ sign
                 break;
                 case '_Print':
-                    records[I].vm_custom[field]=true;
+                    records[I].vm_readonly[field]=true;
                     if(records[I].UID===undefined) return;
-                    var html="<u style='cursor:pointer'>Invoice</u>";
+                    var html="<u style='cursor:pointer' ><i class='fa fa-print' title='Print'></i></u>";
                     td.html(html);
                     td.find('u').on('click',function(){
                         var prefix="";//$vm.module_list[$vm.vm['__ID'].name].prefix;
@@ -57,7 +57,6 @@
             _records[0].Total_Amount=0;
             _records[0].Total_Payment=0;
             _records[0].Balance=0;
-            alert(_records[0].Issue_Date)
         };
         //-------------------------------------
         $('#D__ID').on('load',function(){  _set_req(); _request_data(); })

@@ -1,5 +1,9 @@
 <section>
-    VmInclude:__COMPONENT__/toolbar/save.v3.html
+    <div id=toolbar__ID class="navbar navbar-default" style='margin-bottom:0px;'>
+    	<div class="navbar-form navbar-left">
+    		<button id=save__ID type=button class='btn btn-secondary' title="Save" ><i class="fa fa-upload"></i></button>
+    	</div>
+    </div>
 	<form id=F__ID>
         <div class="table-responsive">
         <table id=tb__ID style='max-width:700px'>
@@ -13,7 +17,7 @@
             <tr><td colspan=2 data-id=Client data-custom=1>
                 <input name=Client  id=Client__ID  type=text class=sel__ID placeholder='select a client...'/>
                 <input name=Client_uid id=Client_uid__ID type=text readonly style="width:50px;color:#ccc;" />
-                <u style='cursor:pointer;float:right;' id=Client_r__ID>Remove</u>
+                <u style='cursor:pointer' id=Client_r__ID title="Remove"><i class='fa fa-trash-o'></i></u>
             </td></tr>
 <!--            <tr><td>Client Info (if not in Client List)</td><td data-id=Client_Info></td></tr> -->
             <tr><td>Invoice Number</td><td data-id=Invoice_Number></td></tr>
@@ -21,13 +25,13 @@
 			<tr><td>Due Date</td><td data-id=Due_Date></td></tr>
 			<tr><td colspan=2 class='subheader__ID'>Invoice Items</td></tr>
             <tr><td colspan=2>
-                <u style='cursor:pointer' id=add_an_item__ID>Add an item</u>
+                <button id=add_an_item__ID type=button class='btn btn-secondary' title="Add new" ><i class="fa fa-plus"></i></button>
             <div class="table-responsive">
                 <table id=grid_item_a__ID></table>
             </div>
             <div class="table-responsive">
                 <table style='float:right;border-collapse: collapse;'>
-                    <colgroup><col style='width:180px' /><col /></colgroup>
+                    <colgroup><col style='width:120px' /><col /></colgroup>
                     <tr><td>GST Amount</td><td data-id='GST_Amount'></td></tr>
                     <tr><td>Total Amount</td><td data-id='Total_Amount'></td></tr>
                 </table>
@@ -35,13 +39,13 @@
             </td></tr>
 			<tr><td colspan=2 class='subheader__ID'>Payment Items</td></tr>
             <tr><td colspan=2>
-                <u style='cursor:pointer' id=add_an_item_b__ID>Add an item</u>
+                <button id=add_an_item_b__ID type=button class='btn btn-secondary' title="Add new" ><i class="fa fa-plus"></i></button>
                 <div class="table-responsive">
                     <table id=grid_item_b__ID></table>
                 </div>
                 <div class="table-responsive">
-                <table style='width:300px;float:right;border-collapse: collapse;'>
-					<colgroup><col style='width:180px' /><col /></colgroup>
+                <table style='float:right;border-collapse: collapse;'>
+					<colgroup><col style='width:120px' /><col /></colgroup>
                     <tr><td>Total Payment</td><td data-id='Total_Payment'></td></tr>
 					<tr><td>Balance</td><td data-id='Balance'></td></tr>
                 </table>
@@ -55,8 +59,8 @@
     function F__ID(){
         //----------------------------------
         VmInclude:__COMPONENT__/grid/form.2.js
-		VmInclude:__COMPONENT__/grid/grid_item_a.2.js
-		VmInclude:__COMPONENT__/grid/grid_item_b.2.js
+		VmInclude:__CURRENT_PATH__/grid_item_a.2.js
+		VmInclude:__CURRENT_PATH__/grid_item_b.2.js
         //-------------------------------------
         var client_tid=$vm.module_list['client'].table_id;
         //-------------------------------------
@@ -133,7 +137,7 @@
 
 		//----------------------------------
         //item a part
-        _item_a_fields="Description,Unit_Price,Qty|Quantity,GST,Amount,_Remove";
+        _item_a_fields="Description,Unit_Price,Qty|Quantity,GST,Amount,|_Remove";
         //----------------------------------
         $('#add_an_item__ID').on('click',function(){ _item_a_add(); })
         //----------------------------------
@@ -183,7 +187,7 @@
         //----------------------------------
         _item_a_after_change=function(records,I,field,td,set_value,source){
             switch(field){
-			case "Unit_Price":
+			    case "Unit_Price":
                 case "Quantity":
 				case "GST":
                     cal();
@@ -212,6 +216,7 @@
 					a=a*1.1;
 				}
                 _item_a_records[i].Amount=a.toFixed(2);
+                _item_a_records[i].Unit_Price=p.toFixed(2);
                 total+=a;
             }
             _records[I].GST_Amount=gst.toFixed(2);
@@ -227,7 +232,7 @@
 
 		//----------------------------------
         //item b part
-        _item_b_fields="Payment_Date,Method,Notes,Amount,_Remove";
+        _item_b_fields="Payment_Date,Method,Notes,Amount,|_Remove";
         //----------------------------------
         $('#add_an_item_b__ID').on('click',function(){ _item_b_add(); })
         //----------------------------------
