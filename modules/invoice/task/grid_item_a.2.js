@@ -85,7 +85,7 @@ var _item_a_render=function(I){
         //-------------------------
         if(column_name=='_Remove'){
             $(this).css('color','#666')
-            $(this).css('width','50px')
+            //$(this).css('width','50px')
             $(this).html("<u style='cursor:pointer'><i class='fa fa-trash-o' title='Remove'></i></u>");
             $(this).find('u').data('ID',_item_a_records[row].ID);
             $(this).find('u').on('click',function(){

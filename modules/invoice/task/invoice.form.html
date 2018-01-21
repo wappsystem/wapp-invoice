@@ -25,29 +25,29 @@
 			<tr><td>Due Date</td><td data-id=Due_Date></td></tr>
 			<tr><td colspan=2 class='subheader__ID'>Invoice Items</td></tr>
             <tr><td colspan=2>
-                <button id=add_an_item__ID type=button class='btn btn-secondary' title="Add new" ><i class="fa fa-plus"></i></button>
+                <button id=add_an_item__ID type=button class='btn btn-secondary btn-sm' title="Add new" ><i class="fa fa-plus"></i></button>
             <div class="table-responsive">
                 <table id=grid_item_a__ID></table>
             </div>
             <div class="table-responsive">
                 <table style='float:right;border-collapse: collapse;'>
                     <colgroup><col style='width:120px' /><col /></colgroup>
-                    <tr><td>GST Amount</td><td data-id='GST_Amount'></td></tr>
-                    <tr><td>Total Amount</td><td data-id='Total_Amount'></td></tr>
+                    <tr><td>GST Amount</td><td data-id='GST_Amount' style='text-align:right;white-space:nowrap'></td></tr>
+                    <tr><td>Total Amount</td><td data-id='Total_Amount' style='text-align:right;white-space:nowrap'></td></tr>
                 </table>
             </div>
             </td></tr>
 			<tr><td colspan=2 class='subheader__ID'>Payment Items</td></tr>
             <tr><td colspan=2>
-                <button id=add_an_item_b__ID type=button class='btn btn-secondary' title="Add new" ><i class="fa fa-plus"></i></button>
+                <button id=add_an_item_b__ID type=button class='btn btn-secondary btn-sm' title="Add new" ><i class="fa fa-plus"></i></button>
                 <div class="table-responsive">
                     <table id=grid_item_b__ID></table>
                 </div>
                 <div class="table-responsive">
                 <table style='float:right;border-collapse: collapse;'>
 					<colgroup><col style='width:120px' /><col /></colgroup>
-                    <tr><td>Total Payment</td><td data-id='Total_Payment'></td></tr>
-					<tr><td>Balance</td><td data-id='Balance'></td></tr>
+                    <tr><td>Total Payment</td><td data-id='Total_Payment' style='text-align:right;white-space:nowrap'></td></tr>
+					<tr><td>Balance</td><td data-id='Balance' style='text-align:right;white-space:nowrap'></td></tr>
                 </table>
             </div>
             </td></tr>
@@ -123,8 +123,11 @@
                         $(this).find("input[name='"+field+"']").val(_records[I].Client);
                         $(this).find("input[name='"+field+"_uid']").val(_records[I].Client_uid);
                     	break;
-					case "xxx":
-                    	break;
+					case "GST_Amount":
+                    alert(_records[I].GST_Amount)
+                        //$(this).css("text-align","right").css('white-space','nowrap');
+                        //td.html(formatter.format(_records[I].GST_Amount.replace('$','').replace(/,/g,''))); //add $ sign
+                        break;
                 }
             })
         }
@@ -142,11 +145,23 @@
         $('#add_an_item__ID').on('click',function(){ _item_a_add(); })
         //----------------------------------
 		var item_list_tid=$vm.module_list["item-list"].table_id;
+        //-------------------------------------
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 2,
+        });
 		//-------------------------------------
         _item_a_cell_render=function(records,I,field,td,set_value,source){
             switch(field){
+                case "Unit_Price":
+                    if(source=="grid") td.css("text-align","right").css('white-space','nowrap');
+                    td.html(formatter.format(records[I][field].replace('$','').replace(/,/g,''))); //add $ sign
+                    break;
                 case "Amount":
                     records[I].vm_readonly[field]=true;
+                    if(source=="grid") td.css("text-align","right").css('white-space','nowrap');
+                    td.html(formatter.format(records[I][field].replace('$','').replace(/,/g,''))); //add $ sign
                     break;
 				case "GST":
 					td.html('<input type=checkbox checked />');
@@ -206,7 +221,7 @@
         var cal=function(){
             var total=0,gst=0;
             for(var i=0;i<_item_a_records.length;i++){
-                var p=parseFloat(_item_a_records[i].Unit_Price);
+                var p=parseFloat(_item_a_records[i].Unit_Price.replace('$','').replace(/,/g,''));
                 var q=parseFloat(_item_a_records[i].Quantity);
                 if(_item_a_records[i].Unit_Price=='') p=0;
                 if(_item_a_records[i].Quantity=='') q=0;
@@ -223,6 +238,7 @@
             _records[I].Total_Amount=total.toFixed(2);
 			_records[I].Balance=(_records[I].Total_Payment-_records[I].Total_Amount).toFixed(2);
             _field_process();
+            _cell_render();
             _item_a_render();
 			_item_b_render();
 
@@ -238,11 +254,10 @@
         //----------------------------------
         _item_b_cell_render=function(records,I,field,td,set_value,source){
             switch(field){
-				/*
                 case "Amount":
-                    records[I].vm_readonly[field]=true;
+                    if(source=="grid") td.css("text-align","right").css('white-space','nowrap');
+                    td.html(formatter.format(records[I][field].replace('$','').replace(/,/g,''))); //add $ sign
                     break;
-					*/
 				case "Payment_Date":
 					records[I].vm_custom[field]=true;
 					td.html('<input style="border:0; width:80px" />')
@@ -293,7 +308,7 @@
         var b_cal=function(){
             var total=0;
             for(var i=0;i<_item_b_records.length;i++){
-                var p=parseFloat(_item_b_records[i].Amount);
+                var p=parseFloat(_item_b_records[i].Amount.replace('$','').replace(/,/g,''));
                 if(_item_b_records[i].Amount=='') p=0;
                 total+=p;
             }

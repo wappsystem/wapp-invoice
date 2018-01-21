@@ -1,5 +1,5 @@
 <section>
-      VmInclude:__COMPONENT__/grid/grid.v3.html
+      VmInclude:__CURRENT_PATH__/grid.v3.html
 </section>
 <script>
     function F__ID(){
@@ -10,6 +10,12 @@
 		_fields+=",_Hidden|invoice_items"
 		_fields+=",_Hidden|payment_items"
         _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete,_Hidden|Client_uid";
+        //-------------------------------------
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 2,
+        });
         //-------------------------------------
         _cell_render=function(records,I,field,td,set_value,source){
             switch(field){
@@ -26,7 +32,8 @@
                 case 'Balance':
                     records[I].vm_readonly[field]=true;
                     if(source=="grid") td.css("text-align","right").css('white-space','nowrap');
-                    td.html('$ '+parseFloat(records[I][field]).toFixed(2) ); //add $ sign
+                    //td.html('$ '+parseFloat(records[I][field]).toFixed(2) ); //add $ sign
+                    td.html(formatter.format((records[I][field]))); //add $ sign
                 break;
                 case '_Print':
                     records[I].vm_readonly[field]=true;
@@ -61,6 +68,7 @@
         //-------------------------------------
         $('#D__ID').on('load',function(){  _set_req(); _request_data(); })
         $('#D__ID').on('back',function(){  _set_req(); _request_data(); })
+        $('#help__ID').on('click',function(){alert(1) })
         //-------------------------------------
     }
 </script>
