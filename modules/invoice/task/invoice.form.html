@@ -1,9 +1,11 @@
 <section>
     <div id=toolbar__ID class="navbar navbar-default" style='margin-bottom:0px;'>
     	<div class="navbar-form navbar-left">
-    		<button id=save__ID type=button class='btn btn-secondary' title="Save" ><i class="fa fa-upload"></i></button>
+            <a class="col-"><button type="button" class='btn btn-info btn-sm ' data-toggle="collapse" data-target="#help__ID" title="Help - Intructions" ><i class="fa fa-info"></i></button></a>
+    		&nbsp;<button id=save__ID type=button class='btn btn-secondary' title="Save" ><i class="fa fa-upload"></i></button>
     	</div>
     </div>
+    <div id=help__ID class="collapse"></div>
 	<form id=F__ID>
         <div class="table-responsive">
         <table id=tb__ID style='max-width:700px'>
@@ -37,7 +39,7 @@
                 </table>
             </div>
             </td></tr>
-			<tr><td colspan=2 class='subheader__ID'>Payment Items</td></tr>
+			<tr><td colspan=2 class='subheader__ID'>Payments</td></tr>
             <tr><td colspan=2>
                 <button id=add_an_item_b__ID type=button class='btn btn-secondary btn-sm' title="Add new" ><i class="fa fa-plus"></i></button>
                 <div class="table-responsive">
@@ -99,6 +101,7 @@
         }
         //-------------------------------------
         $('#D__ID').on('load',function(){
+            $('#help__ID').html(help);
             _init();
             _field_process();
             _set_client_field();
@@ -114,6 +117,38 @@
 			_item_b_records=_records[I].payment_items; _item_b_render();
             //-------
         })
+        //-------------------------------------
+        var help='<div class="container">\
+    					<div class="row">\
+                            <div class="col-sm-2 text-content text-left">\
+                                <h4>Symbol</h4>\
+                                <p><i class="fa fa-trash-o"></i> Delete Client or Item from list</p>\
+                                <br>\
+                            </div>\
+    						<div class="col-sm-6 text-content text-left">\
+    							<h4>Edit Invoice - Add Items</h4>\
+                                1. Select a client from list. Type in the beginning of the client&apos;s name and select from list. If not in list just type in the name manually.\
+                                <br>2. Click on Issue date and select a date. (Default today&apos; date)\
+                                <br>3. Click on Due date and select a date. (Default today&apos; date)\
+                                <br>4. Click on <i class="fa fa-plus"></i> to add Invoice Item.\
+                                <br>5. Select Description from list. If item not in list type in the description manually.\
+                                <br>6. Fill in Unit Price and Quantity\
+                                <br>7. If GST is not applicable on the item untick the checkbox\
+                                <br>8. Click on <i class="fa fa-upload"></i> to save the changes\
+    							<br>\
+    						</div>\
+                            <div class="col-sm-4 text-content text-left">\
+                                <h4>Edit Invoice - Add Payment</h4>\
+                                1. Click on <i class="fa fa-plus"></i> to add Payment.\
+                                <br>2. Click on Payment Date and select a date. (Default today&apos; date)\
+                                <br>3. Select Method\
+                                <br>4. Add Notes\
+                                <br>5. Add Amount\
+                                <br>6. Click on <i class="fa fa-upload"></i> to save the changes\
+    							<br>\
+    						</div>\
+    					</div>\
+        			</div>'
         //----------------------------------
         var custom_field_process=function(){
             $('#tb__ID td[data-custom=1]').each(function(){

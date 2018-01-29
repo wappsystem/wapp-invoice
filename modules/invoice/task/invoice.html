@@ -66,10 +66,47 @@
             _records[0].Balance=0;
         };
         //-------------------------------------
-        $('#D__ID').on('load',function(){  $('#title__ID').text('Invoices');_set_req(); _request_data(); })
+        $('#D__ID').on('load',function(){  $('#title__ID').text('Invoices');$('#help__ID').html(help);_set_req(); _request_data(); })
         $('#D__ID').on('back',function(){  _set_req(); _request_data(); })
-        $('#help__ID').on('click',function(){alert(1) })
+        //$('#help_botton__ID').on('click',function(){alert(1) })
         //-------------------------------------
+        var help='<div class="container">\
+        						<div class="row">\
+                                    <div class="col-sm-2 text-content text-left">\
+                                        <h4>Symbols in invoice list</h4>\
+                                        <p><i class="fa fa-pencil-square-o"></i> Edit / change details in invoice</p>\
+                                        <p><i class="fa fa-print"></i> Print invoice</p>\
+                                        <p><i class="fa fa-trash-o"></i> Delete invoice</p>\
+                                        <br>\
+                                    </div>\
+        							<div class="col-sm-2 text-content text-left">\
+        								<h4><i class="fa fa-plus"></i> = Add Invoice</h4>\
+        								<p>Click on <i class="fa fa-pencil-square-o"></i> to add details to invoice</p>\
+        								<br>\
+        							</div>\
+        							<div class="col-sm-2 text-content text-left">\
+        								<h4><i class="fa fa-upload"></i> = Save change</h4>\
+        								<p>This button will turn red when change has been made. Must be clicked to save change.</p>\
+        								<br>\
+        							</div>\
+                                    <div class="col-sm-2 text-content text-left">\
+        								<h4><i class="fa fa-search"></i> = Search </h4>\
+        								<p>If Keyword is empty reload invoice list. Search invoice list for full word put into keyword</p>\
+        								<br>\
+        							</div>\
+                                    <div class="col-sm-2 text-content text-left">\
+        								<h4><i class="fa fa-arrow-left"></i> = Previous</h4>\
+                                        <h4><i class="fa fa-arrow-right"></i> = Next Page</h4>\
+        								<p>If all invoices don&apos;t fit into one page, these arrows can be used for paging </p>\
+        								<br>\
+        							</div>\
+                                    <div class="col-sm-2 text-content text-left">\
+        								<h4><i class="fa fa-download"></i> = Export</h4>\
+        								<p>Exporting the invoice list to excel format</p>\
+        								<br>\
+        							</div>\
+        						</div>\
+        			</div>'
     }
 </script>
 <style>
