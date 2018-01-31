@@ -7,9 +7,12 @@
     "modules":
 	{
         "home":	                    {"url":"/modules/static/home.html","name_for_search":"Home page"},
-        "invoice":	  				{"table_id":"20011180","url":"modules/invoice/task/invoice.html", "form_module":"invoice-form","name_for_search":"Invoice"},
+        "invoice":	  				{"table_id":"20011180","url":"modules/invoice/task/invoice.html", "form_module":"invoice-form","name_for_search":"Invoices"},
         "invoice-form":	 			{"table_id":"20011180","url":"modules/invoice/task/invoice.form.html","name_for_search":""},
         "invoice-print":	 		{"table_id":"20011180","url":"modules/invoice/task/invoice.print.html","name_for_search":""},
+        "quotation":	  			{"table_id":"20011459","url":"modules/invoice/task/quotation.html", "form_module":"quotation-form","name_for_search":"Quotations"},
+        "quotation-form":	 		{"table_id":"20011459","url":"modules/invoice/task/quotation.form.html","name_for_search":""},
+        "quotation-print":	 		{"table_id":"20011459","url":"modules/invoice/task/quotation.print.html","name_for_search":""},
 		"client":	      			{"table_id":"20009674","url":"modules/invoice/task/client.html",	"name_for_search":"Client"},
         "item-list":      			{"table_id":"20011400","url":"modules/invoice/task/item-list.html",	"name_for_search":"Item List"}
 	}

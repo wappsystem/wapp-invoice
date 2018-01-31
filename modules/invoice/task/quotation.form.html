@@ -14,7 +14,7 @@
                 <col />
             </colgroup>
 
-            <tr><td colspan=2 class='header__ID'>Invoice</td></tr>
+            <tr><td colspan=2 class='header__ID'>Quotation</td></tr>
 
             <tr><td colspan=2 data-id=Client data-custom=1>
                 <input name=Client  id=Client__ID  type=text class=sel__ID placeholder='select a client...'/>
@@ -22,36 +22,21 @@
                 <u style='cursor:pointer' id=Client_r__ID title="Remove"><i class='fa fa-trash-o'></i></u>
             </td></tr>
 <!--            <tr><td>Client Info (if not in Client List)</td><td data-id=Client_Info></td></tr> -->
-            <tr><td>Invoice Number</td><td data-id=Invoice_Number></td></tr>
+            <tr><td>Quotation Number</td><td data-id=Quotation_Number></td></tr>
             <tr><td>Issue Date</td><td data-id=Issue_Date></td></tr>
-			<tr><td>Due Date</td><td data-id=Due_Date></td></tr>
-			<tr><td colspan=2 class='subheader__ID'>Invoice Items</td></tr>
+			<tr><td colspan=2 class='subheader__ID'>Quotation Items</td></tr>
             <tr><td colspan=2>
                 <button id=add_an_item__ID type=button class='btn btn-secondary btn-sm' title="Add new" ><i class="fa fa-plus"></i></button>
-            <div class="table-responsive">
-                <table id=grid_item_a__ID></table>
-            </div>
-            <div class="table-responsive">
-                <table style='float:right;border-collapse: collapse;'>
-                    <colgroup><col style='width:120px' /><col /></colgroup>
-                    <tr><td>GST Amount</td><td data-id='GST_Amount' style='text-align:right;white-space:nowrap'></td></tr>
-                    <tr><td>Total Amount</td><td data-id='Total_Amount' style='text-align:right;white-space:nowrap'></td></tr>
-                </table>
-            </div>
-            </td></tr>
-			<tr><td colspan=2 class='subheader__ID'>Payments</td></tr>
-            <tr><td colspan=2>
-                <button id=add_an_item_b__ID type=button class='btn btn-secondary btn-sm' title="Add new" ><i class="fa fa-plus"></i></button>
                 <div class="table-responsive">
-                    <table id=grid_item_b__ID></table>
+                    <table id=grid_item_a__ID></table>
                 </div>
                 <div class="table-responsive">
-                <table style='float:right;border-collapse: collapse;'>
-					<colgroup><col style='width:120px' /><col /></colgroup>
-                    <tr><td>Total Payment</td><td data-id='Total_Payment' style='text-align:right;white-space:nowrap'></td></tr>
-					<tr><td>Balance</td><td data-id='Balance' style='text-align:right;white-space:nowrap'></td></tr>
-                </table>
-            </div>
+                    <table style='float:right;border-collapse: collapse;'>
+                        <colgroup><col style='width:120px' /><col /></colgroup>
+                        <tr><td>GST Amount</td><td data-id='GST_Amount' style='text-align:right;white-space:nowrap'></td></tr>
+                        <tr><td>Total Amount</td><td data-id='Total_Amount' style='text-align:right;white-space:nowrap'></td></tr>
+                    </table>
+                </div>
             </td></tr>
         </table>
     </div>
@@ -62,7 +47,6 @@
         //----------------------------------
         VmInclude:__COMPONENT__/grid/form.2.js
 		VmInclude:__CURRENT_PATH__/grid_item_a.2.js
-		VmInclude:__CURRENT_PATH__/grid_item_b.2.js
         //-------------------------------------
         var client_tid=$vm.module_list['client'].table_id;
         //-------------------------------------
@@ -111,10 +95,8 @@
             if(_save_style=='none') $('#save__ID').hide();
 
             //-------item part
-			if(_records[I].invoice_items=='') _records[I].invoice_items=[];
-			if(_records[I].payment_items=='') _records[I].payment_items=[];
-			_item_a_records=_records[I].invoice_items; _item_a_render();
-			_item_b_records=_records[I].payment_items; _item_b_render();
+			if(_records[I].quotation_items=='') _records[I].quotation_items=[];
+			_item_a_records=_records[I].quotation_items; _item_a_render();
             //-------
         })
         //-------------------------------------
@@ -126,16 +108,15 @@
                                 <br>\
                             </div>\
     						<div class="col-sm-6 text-content text-left">\
-    							<h4>Edit Invoice - Instructions</h4>\
+    							<h4>Edit Quotation - Instructions</h4>\
                                 <p>Select a client from list. Type in the beginning of the client&apos;s name and select from list.\
                                 <br>Client name can also be typed in if not in list.</p>\
-                                <p>Click on <i class="fa fa-plus"></i> to add Invoice Item.</p>\
+                                <p>Click on <i class="fa fa-plus"></i> to add Quotation Item.</p>\
                                 <p>Select Description from list. If item not in list type in the description.</p>\
     						</div>\
                             <div class="col-sm-4 text-content text-left">\
                                 <h4>&nbsp;</h4>\
                                 <p>Unit Price is price without GST. GST is automatically added if GST checkbox is ticked</p>\
-                                <p>Click on <i class="fa fa-plus"></i> to add Payment.</p>\
                                 <p>REMEMBER Click on <i class="fa fa-upload"></i> to save the changes</p>\
     							<br>\
     						</div>\
@@ -264,89 +245,11 @@
             }
             _records[I].GST_Amount=gst.toFixed(2);
             _records[I].Total_Amount=total.toFixed(2);
-			_records[I].Balance=(_records[I].Total_Payment-_records[I].Total_Amount).toFixed(2);
             _field_process();
             _cell_render();
             _item_a_render();
-			_item_b_render();
 
-			_records[I].invoice_items=_item_a_records;
-        }
-        //----------------------------------
-
-		//----------------------------------
-        //item b part
-        _item_b_fields="Payment_Date,Method,Notes,Amount,|_Remove";
-        //----------------------------------
-        $('#add_an_item_b__ID').on('click',function(){ _item_b_add(); })
-        //----------------------------------
-        _item_b_cell_render=function(records,I,field,td,set_value,source){
-            switch(field){
-                case "Amount":
-                    if(source=="grid") td.css("text-align","right").css('white-space','nowrap');
-                    td.html(formatter.format(records[I][field].replace('$','').replace(/,/g,''))); //add $ sign
-                    break;
-				case "Payment_Date":
-					records[I].vm_custom[field]=true;
-					td.html('<input style="border:0; width:80px" />')
-					td.find('input').val(records[I][field])
-					var dateFormat='dd/mm/yy';
-					if(typeof _dateFormat!=='undefined') dateFormat=_dateFormat;
-					td.find('input').datepicker({dateFormat:dateFormat,changeMonth:true, changeYear:true,onClose:function(dateText) {
-					    set_value(dateText,records,I,field);
-						_item_b_after_change(records,I,field,td,set_value,source);
-					}});
-                    break;
-				case "Method":
-					var html="<select style='border:0;''>\
-                        <option value=''>---</option>\
-                        <option>Cash</option>\
-                        <option>Credit Card</option>\
-                        <option>Direct Credit</option>\
-                        </select>\
-                    ";
-					records[I].vm_custom[field]=true;
-					td.html(html)
-					td.find('select').val(records[I][field])
-					td.find('select').on('change', function(){
-					    set_value($(this).val(),records,I,field);
-						_item_b_after_change(records,I,field,td,set_value,source);
-					});
-					break;
-            }
-        }
-        //----------------------------------
-        _item_b_after_change=function(records,I,field,td,set_value,source){
-            switch(field){
-				case "Amount":
-				case "Notes":
-                    b_cal();
-                    break;
-            }
-        }
-        //----------------------------------
-        _item_b_after_remove=function(){
-            b_cal();
-        }
-        //----------------------------------
-        _item_b_before_submit=function(record,dbv){
-            return true;
-        }
-        //----------------------------------
-        var b_cal=function(){
-            var total=0;
-            for(var i=0;i<_item_b_records.length;i++){
-                var p=parseFloat(_item_b_records[i].Amount.replace('$','').replace(/,/g,''));
-                if(_item_b_records[i].Amount=='') p=0;
-                total+=p;
-            }
-            _records[I].Total_Payment=total.toFixed(2);
-			_records[I].Balance=(_records[I].Total_Payment-_records[I].Total_Amount).toFixed(2);
-            _field_process();
-			_item_a_render();
-            _item_b_render();
-
-			_records[I].paymount_items=_item_b_records;
+			_records[I].quotation_items=_item_a_records;
         }
         //----------------------------------
     }
