@@ -73,10 +73,10 @@
             if(record.Issue_Date!==undefined) $('#issue_date__ID').text(record.Issue_Date);
             if(record.Due_Date!==undefined) $('#pay_by__ID').text(record.Due_Date);
             //if(record.V12!==undefined) $('#sub_total__ID').text('$'+parseFloat(record.V12).toFixed(2));
-            if(record.GST_Amount!==undefined) $('#gst__ID').text('$'+parseFloat(record.GST_Amount).toFixed(2));
-            if(record.Total_Amount!==undefined) $('#total__ID').text('$'+parseFloat(record.Total_Amount).toFixed(2));
-            if(record.Total_Payment!==undefined) $('#total_paid__ID').text('$'+parseFloat(record.Total_Payment).toFixed(2));
-            if(record.Balance!==undefined) $('#total_balance__ID').text('$'+parseFloat(record.Balance).toFixed(2));
+            if(record.GST_Amount!==undefined) $('#gst__ID').text(formatter.format(record.GST_Amount));
+            if(record.Total_Amount!==undefined) $('#total__ID').text(formatter.format(record.Total_Amount));
+            if(record.Total_Payment!==undefined) $('#total_paid__ID').text(formatter.format(record.Total_Payment));
+            if(record.Balance!==undefined) $('#total_balance__ID').text(formatter.format((parseFloat(record.Balance)*-1)));
             if(record.PUID=="0")  $('#client__ID').text(record.Client);
             //-----------------------------------------
             //items
@@ -88,8 +88,8 @@
                     else $('#gst_line'+i+'__ID').text('No');
                 }
                 if(items[i].Quantity!==undefined)        $('#qty_line'+i+'__ID').text(items[i].Quantity);
-                if(items[i].Unit_Price!==undefined)      $('#price_line'+i+'__ID').text('$'+items[i].Unit_Price);
-                if(items[i].Amount!==undefined)          $('#total_line'+i+'__ID').text('$'+parseFloat(items[i].Amount).toFixed(2) );
+                if(items[i].Unit_Price!==undefined)      $('#price_line'+i+'__ID').text(formatter.format(items[i].Unit_Price));
+                if(items[i].Amount!==undefined)          $('#total_line'+i+'__ID').text(formatter.format(items[i].Amount));
             }
             //-----------------------------------------
             //get client
@@ -108,6 +108,12 @@
             //-----------------------------------------
     	});
     	//---------------------------------------------
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 2,
+        });
+        //-------------------------------------
     }
 </script>
 <style>
